@@ -17,7 +17,7 @@ program mandel
   xres = 2048
   yres = 2048
 
-  max_iter = 255
+  max_iter = 256
 
   rmax = 2.0
 
@@ -44,7 +44,7 @@ program mandel
   end do
   
   open(unit=24, file="mandel.pgm")
-  call writepgm(pixels, xres, yres, max_iter, 24)
+  call writepgm(pixels, xres, yres, (max_iter - 1), 24)
   close(24)
   deallocate(pixels)
 end program mandel
