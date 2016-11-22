@@ -9,7 +9,7 @@ You can run the scripts with `Rscript`:
 $ Rscript mandelRnaive.R
 ```
 
-will produce an mandel.pgm that looks like this:
+will produce a `mandel.pgm` that looks like this:
 
 ![exmample plot](example.png)
 
