@@ -16,7 +16,7 @@ yres <- 512
 img <- matrix(0.0, nrow = yres, ncol=xres)
 
 # Maximum number of interations.
-max_iter <- 100
+max_iter <- 256
 
 # Rmax is the point we declare escape.
 rmax <- 2.0
