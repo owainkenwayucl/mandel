@@ -9,12 +9,8 @@ ymax <- 2.0
 ymin <- -2.0
 
 # Resolution of plot.
-xres <- 2048
-yres <- 2048
-
-# Resolution of file.
-fxres <- 1024
-fyres <- 1024
+xres <- 512
+yres <- 512
 
 # In memory matrix that represents the plot.
 img <- matrix(0.0, nrow = yres, ncol=xres)
@@ -27,9 +23,6 @@ rmax <- 2.0
 
 # Generate a greyscale color map.
 cols <- colorRampPalette(c("white","black"))(max_iter)
-
-# Open our  output file.
-png(file="output.png", width=fxres, height=fyres)
 
 cat("Working")
 
@@ -50,15 +43,13 @@ for (Px in 1:xres) {
       x <- xt
       iter <- iter + 1
     }
-    img[Py,Px] <- iter
+    img[Py,Px] <- max_iter - iter
   }
 }
 
-# Transpose image as matrices are not display co-ords.
-timg <- t(img)
-
 # Write file.
-image(1:xres, 1:yres, timg, col=cols, useRaster=TRUE, axes=FALSE, ann=FALSE, frame.plot=FALSE)
+source("imageio.R")
+writepgm(img, colours=max_iter, filename="mandel.pgm")
 
 # Tidy.
 cat("Done.\n")
