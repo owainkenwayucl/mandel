@@ -17,7 +17,7 @@ program mandel
   xres = 2048
   yres = 2048
 
-  max_iter = 256
+  max_iter = 255
 
   rmax = 2.0
 
