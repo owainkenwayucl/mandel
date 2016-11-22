@@ -15,10 +15,15 @@ writepgm <- function(d, white=255, filename="output.pgm") {
   cat(x, y, "\n", file=filename, append=TRUE) 
   cat(white, "\n", file=filename, append=TRUE) 
 
+# Write file by constructing a line string per line, and writing it.
+# This balances between cat being slow (multiple file operations) on Windows 
+# and paste() being slow for very large strings.
   for (j in 1:y) {
+    line = ""
     for (i in 1:x) {
-      cat(floor(d[j,i]), "\n", file=filename, append=TRUE)
+      line = paste(line, floor(d[j,i]), sep="\n")
     }
+    cat(line, file=filename, append=TRUE)
   }
 }
 
@@ -33,13 +38,18 @@ writepbm <- function(d, threshold=0.5, filename="output.pbm") {
   cat("# Written by pnmmodules (https://github.com/owainkenwayucl/pnmmodules).\n", file=filename, append=TRUE)
   cat(x, y, "\n", file=filename, append=TRUE) 
 
+# Write file by constructing a line string per line, and writing it.
+# This balances between cat being slow (multiple file operations) on Windows 
+# and paste() being slow for very large strings.
   for (j in 1:y) {
+    line = ""
     for (i in 1:x) {
       if (d[j,i] >= threshold) {          
-        cat(1, "\n", file=filename, append=TRUE)
+        line = paste(line, 1, sep="\n")
       } else {
-        cat(0, "\n", file=filename, append=TRUE)
+        line = paste(line, 0, sep="\n")
       }
     }
+    cat(line, file=filename, append=TRUE)
   }
 }
