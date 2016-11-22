@@ -49,7 +49,7 @@ for (Px in 1:xres) {
 
 # Write file.
 source("imageio.R")
-writepgm(img, colours=max_iter, filename="mandel.pgm")
+writepgm(img, white=(max_iter - 1), filename="mandel.pgm")
 
 # Tidy.
 cat("Done.\n")
