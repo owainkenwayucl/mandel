@@ -21,9 +21,6 @@ max_iter <- 256
 # Rmax is the point we declare escape.
 rmax <- 2.0
 
-# Generate a greyscale color map.
-cols <- colorRampPalette(c("white","black"))(max_iter)
-
 cat("Working")
 
 # Main Loop.
