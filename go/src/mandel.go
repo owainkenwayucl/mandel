@@ -1,3 +1,6 @@
+// Simple mandelbrot generator in Go
+// Owain Kenway
+
 package main
 
 import ("pnmmodules")
@@ -20,8 +23,12 @@ func main() {
 
     rmax = 2.0
 
+// Allocate slice of slices.
+// A 2D slice is a slice of slices.
     pixels = make([][]int, xres)
     for px = 0; px < xres; px++ {
+
+// Allocate slice in slice of slices
         pixels[px] = make([]int, yres)
 
         x0 = ((float64(px)/float64(xres)) * float64(xmax - xmin)) + xmin
@@ -43,6 +50,8 @@ func main() {
         }
 
     } 
+    
+// Call our Writepgm routine from pgmmodules.
     pnmmodules.Writepgm(pixels, max_iter - 1, "mandel.pgm")
 
 
