@@ -31,10 +31,10 @@ func main() {
 // Allocate slice in slice of slices
         pixels[px] = make([]int, yres)
 
-        x0 = ((float64(px)/float64(xres)) * float64(xmax - xmin)) + xmin
+        x0 = ((float64(px+1)/float64(xres)) * float64(xmax - xmin)) + xmin
 
         for py = 0; py < yres; py++ {
-            y0 = ((float64(py)/float64(yres)) * float64(ymax - ymin)) + ymin
+            y0 = ((float64(py+1)/float64(yres)) * float64(ymax - ymin)) + ymin
 
             iter = 0
             x = 0.0
