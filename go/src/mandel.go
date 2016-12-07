@@ -6,7 +6,7 @@ package main
 import ("pnmmodules")
 
 func main() {
-    var pixels[][] int
+    var pixels[][]int
     var xmin, xmax, ymin, ymax, rmax, x0, y0, x, y, xt float64
     var xres, yres, max_iter, iter, px, py int
 
@@ -44,13 +44,13 @@ func main() {
                 xt = (x*x) - (y*y) + x0
                 y = 2.0 * x * y + y0
                 x = xt
-                iter = iter + 1                
+                iter = iter + 1
             }
             pixels[px][py] = max_iter - iter
         }
 
-    } 
-    
+    }
+
 // Call our Writepgm routine from pgmmodules.
     pnmmodules.Writepgm(pixels, max_iter - 1, "mandel.pgm")
 
