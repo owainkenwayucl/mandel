@@ -1,7 +1,7 @@
 Language,Time
 FORTRAN (GNU),2.23
 FORTRAN (NAG),1.235
-GO,10.264
+Go,10.264
 Swift,9.03
 R,407.493
 R (JIT), 108.366
@@ -11,3 +11,4 @@ Julia (function), 3.079
 JavaScript (Node.js), 6.662
 C (GNU), 1.583
 C (Clang), 1.489
+Common LISP (SBCL), 12.899
