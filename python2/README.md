@@ -13,4 +13,4 @@ will produce a `mandel.pgm` that looks like this:
 
 ![exmample plot](example.png)
 
-Plotting is provided by `pnmmodules` (https://github.com/owainkenwayucl/pnmmodules)
+Plotting is provided by a modified version of the Python 3 module in `pnmmodules` (https://github.com/owainkenwayucl/pnmmodules)
