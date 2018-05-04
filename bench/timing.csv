@@ -13,4 +13,5 @@ C (GNU), 1.583
 C (Clang), 1.489
 Common LISP (SBCL), 12.899
 Python (JIT - Pypy), 2.39
+Python (Jython), 19.91
 Python, 46.82

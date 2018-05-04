@@ -7,7 +7,7 @@ timings <- read.csv("timing.csv")
 sortedtimings <- timings[order(timings$Time),]
 
 # Open our output file
-png(file="timing.png", width=1920, height=720)
+png(file="timing.png", width=2200, height=720)
 
 # Plot
 barplot(sortedtimings$Time, names.arg=sortedtimings$Language, xlab="Language", ylab="Run time (seconds)", main="Run time of mandel code by language")
