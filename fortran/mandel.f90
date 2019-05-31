@@ -5,6 +5,7 @@ program mandel
   implicit none
   
   double precision :: xmax, xmin, ymax, ymin, rmax, x0, y0, x, y, xt
+  double precision :: start_t, startio_t, stop_t
   integer :: xres, yres, max_iter, iter, px, py
   integer, dimension(:,:), allocatable :: pixels
 
@@ -20,6 +21,8 @@ program mandel
   max_iter = 256
 
   rmax = 2.0
+
+  call cpu_time(start_t)
 
   allocate(pixels(xres,yres))
 
@@ -42,9 +45,17 @@ program mandel
     end do
 
   end do
+
+  call cpu_time(startio_t)
   
   open(unit=24, file="mandel.pgm")
   call writepgm(pixels, xres, yres, (max_iter - 1), 24)
   close(24)
   deallocate(pixels)
+
+  call cpu_time(stop_t)
+
+  write(*,*) "Time spent in Mandelbrot:", (startio_t - start_t)
+  write(*,*) "Time spent in I/O:       ", (stop_t - startio_t)
+  write(*,*) "Total:                   ",(stop_t - start_t)
 end program mandel
