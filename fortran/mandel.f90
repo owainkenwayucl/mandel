@@ -55,7 +55,7 @@ program mandel
 
   call cpu_time(stop_t)
 
-  write(*,*) "Time spent in Mandelbrot:", (startio_t - start_t)
-  write(*,*) "Time spent in I/O:       ", (stop_t - startio_t)
-  write(*,*) "Total:                   ",(stop_t - start_t)
+  write(*,'(A,1F12.5,A)') "Time spent in Mandelbrot:", (startio_t - start_t), " seconds"
+  write(*,'(A,1F12.5,A)') "Time spent in I/O:       ", (stop_t - startio_t), " seconds"
+  write(*,'(A,1F12.5,A)') "Total:                   ", (stop_t - start_t), " seconds"
 end program mandel
