@@ -3,6 +3,8 @@
   Owain Kenway
 '''
 
+buffer=2147483647 # 2 megabytes
+
 # Write PGM images.
 # d - the 2d list to write.
 # white - the value of white (max value).
@@ -12,7 +14,7 @@ def writepgm(d, white, filename):
     y = len(d[0])
 
 # Open our file.
-    f = open(filename, 'w')
+    f = open(filename, mode='w', buffering=buffer)
 
 # Write header.
     f.write('P2\n')
@@ -23,8 +25,8 @@ def writepgm(d, white, filename):
 # Write out 2d list.
     for j in range(y):
         for i in range(x):
-            f.write(str(d[i][j]) + '\n')
-
+            f.write(str(d[i][j]) + ' ')
+        f.write('\n')
 
 # Tidy up.
     f.close()
@@ -38,7 +40,7 @@ def writepbm(d, threshold, filename):
     y = len(d[0])
 
 # Open our file.
-    f = open(filename, 'w')
+    f = open(filename, mode='w', buffering=buffer)
 
 # Write header.
     f.write('P1\n')
@@ -49,9 +51,10 @@ def writepbm(d, threshold, filename):
     for j in range(y):
         for i in range(x):
             if d[i][j] >= threshold:
-                f.write('1\n')
+                f.write('1 ')
             else:
-                f.write('0\n')
+                f.write('0 ')
+        f.write('\n')
 
 # Tidy up.
     f.close()
