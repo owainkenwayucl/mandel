@@ -4,6 +4,9 @@
 '''
 
 from tkinter import *
+import numpy as np
+import numba
+import time
 
 def paint(can, x, y, colour):
     x2 = x+1
@@ -11,36 +14,36 @@ def paint(can, x, y, colour):
 
     can.create_oval(x,y,x2,y2,fill=colour, outline=colour)
 
-def mandel(can, xmin=-2.0, xmax=2.0, ymin=-2.0, ymax=2.0, max_iter=256, xres=2048, yres=2048):
-    
-
-    rmax2 = 4.0
-    print("Calculating:", xmin, xmax, ymin, ymax, max_iter, xres, yres)    
+@numba.jit(nopython=True)
+def mandel(xmin=-2.0, xmax=2.0, ymin=-2.0, ymax=2.0, max_iter=256, xres=2048, yres=2048):
+    buffer = np.zeros((xres,yres))
+    rmax2 = 4.0   
     for px in range(xres):
-        print(".", end="", flush=True)
-        x0 = (((px + 1.0)/xres) * (xmax - xmin)) + xmin
-
+        x0 = (((px + 1.0)/xres) * (xmax - xmin)) + xmin      
         for py in range(yres):
             y0 = (((py + 1.0)/yres) * (ymax - ymin)) + ymin
-
             it = 0
             x = 0.0
             y = 0.0
-
             while (((x*x + y*y) < rmax2) and (it < max_iter)):
                 xt = (x*x) - (y*y) + x0
                 y = 2.0 * x * y + y0
                 x = xt
                 it = it + 1 
+            buffer[px,py] = float(it)/float(max_iter)
+    return(buffer)
 
-            shade = hex(int((float(it)/float(max_iter)) * 256)-1)[2:]
-            if len(shade) == 1:
-                shade='0' + shade
+def genColgrey(val):
+    shade = hex(int(val*255))[2:]
+    if len(shade) == 1:
+          shade='0' + shade
+    return '#' + shade + shade + shade
 
-            colour = '#' + shade + shade + shade
-# Remember to flip y-axis otherwise image is upside down!
-            paint(can, px, yres-py, colour)
-    print("\nDone.\n")
+def plotimage(can, image):
+    for px in range(image.shape[0]):
+        for py in range(image.shape[1]):
+            colour = genColgrey(image[px,py])
+            paint(can, px, image.shape[1]-py, colour)
 
 def getdefault(text, default, f):
     challenge = text + "[" + str(default) + "]: "
@@ -65,7 +68,13 @@ if __name__ == '__main__':
     win = Tk()
     win.title("Mandelbrot generator")
     can = Canvas(win, width=w, height=h)
-    can.pack(expand=YES, fill=BOTH) 
-    mandel(can, xmax=xmax, xmin=xmin, ymax=ymax, ymin=ymin, max_iter=mi, xres=w, yres=h)
+    can.pack(expand=YES, fill=BOTH)
+    start = time.time() 
+    buffer = mandel(xmax=xmax, xmin=xmin, ymax=ymax, ymin=ymin, max_iter=mi, xres=w, yres=h)
+    stop = time.time()
+    print("Time taken [calculation]: " + str(stop - start) + " seconds")    
+    plotimage(can,buffer)
+    stop2 = time.time()
+    print("Time taken [display]:     " + str(stop2 - stop) + " seconds")
     win.mainloop()
     
