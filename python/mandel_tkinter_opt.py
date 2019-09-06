@@ -8,12 +8,7 @@ from tkinter import *
 import numpy as np
 import numba
 import time
-
-def paint(can, x, y, colour):
-    x2 = x+1
-    y2 = y+1
-
-    can.create_oval(x,y,x2,y2,fill=colour, outline=colour)
+from PIL import Image, ImageTk, ImageOps
 
 @numba.jit(nopython=True)
 def mandel(xmin=-2.0, xmax=2.0, ymin=-2.0, ymax=2.0, max_iter=256, xres=2048, yres=2048):
@@ -57,11 +52,13 @@ def genimage(image):
 
     return img 
 
-def plotimage(can, image):
-    for px in range(image.shape[0]):
-        for py in range(image.shape[1]):
-            colour = '#%02x%02x%02x' % (int(image[px, py, 0]), int(image[px, py, 1]), int(image[px, py, 2]))
-            paint(can, px, image.shape[1]-py, colour)
+def plotimage(image):
+    imdat = Image.fromarray(np.transpose(image, axes=[1,0,2]).astype('uint8'), 'RGB')
+    img = ImageTk.PhotoImage(ImageOps.flip(imdat))
+    label = Label(image=img)
+    label.image = img
+    label.pack(expand=YES, fill=BOTH)
+    
 
 def getdefault(text, default, f):
     challenge = text + "[" + str(default) + "]: "
@@ -85,8 +82,7 @@ if __name__ == '__main__':
     mi = getdefault("Iterations", 32, False)
     win = Tk()
     win.title("Mandelbrot generator")
-    can = Canvas(win, width=w, height=h)
-    can.pack(expand=YES, fill=BOTH)
+
     start = time.time() 
     buffer = mandel(xmax=xmax, xmin=xmin, ymax=ymax, ymin=ymin, max_iter=mi, xres=w, yres=h)
     stop = time.time()
@@ -95,7 +91,7 @@ if __name__ == '__main__':
     image =  genimage(buffer)   
     stop2 = time.time()
     print("Time taken [render]:     " + str(stop2 - stop) + " seconds")
-    plotimage(can, image)
+    plotimage(image)
     stop3 = time.time()
     print("Time taken [display]:     " + str(stop3 - stop2) + " seconds")
     win.mainloop()
