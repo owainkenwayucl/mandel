@@ -90,7 +90,7 @@ if __name__ == '__main__':
     
     image =  genimage(buffer)   
     stop2 = time.time()
-    print("Time taken [render]:     " + str(stop2 - stop) + " seconds")
+    print("Time taken [render]:      " + str(stop2 - stop) + " seconds")
     plotimage(image)
     stop3 = time.time()
     print("Time taken [display]:     " + str(stop3 - stop2) + " seconds")
