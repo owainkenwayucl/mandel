@@ -39,10 +39,43 @@ def genColgrey(val):
           shade='0' + shade
     return '#' + shade + shade + shade
 
+def genColjet(val):
+    adjusted = -1 *((val * 2.0) - 1.0)
+    r = red(adjusted)
+    b = blue(adjusted)
+    g = green(adjusted)
+    return '#' + r + g + b
+
+def clamp(val):
+    t = 0 if (val < 0) else val
+    return 1.0 if (t > 1.0) else t
+
+def red(val):
+    r = clamp(1.5 - abs(2.0*val - 1.0))
+    r = hex(int(r*255))[2:]
+    if len(r) == 1:
+           r ='0' + r 
+    return r
+
+def blue(val):
+    r = clamp(1.5 - abs(2.0*val + 1.0))
+    r = hex(int(r*255))[2:]
+    if len(r) == 1:
+           r ='0' + r 
+    return r
+
+def green(val):
+    r = clamp(1.5 - abs(2.0*val))
+    r = hex(int(r*255))[2:]
+    if len(r) == 1:
+           r ='0' + r 
+    return r
+
 def plotimage(can, image):
     for px in range(image.shape[0]):
         for py in range(image.shape[1]):
-            colour = genColgrey(image[px,py])
+            #colour = genColgrey(image[px,py])
+            colour = genColjet(image[px,py])
             paint(can, px, image.shape[1]-py, colour)
 
 def getdefault(text, default, f):
