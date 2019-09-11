@@ -6,6 +6,7 @@
 
 from tkinter import *
 import numpy as np
+import matplotlib.cm
 import numba
 import time
 from PIL import Image, ImageTk, ImageOps
@@ -26,31 +27,32 @@ def mandel(xmin=-2.0, xmax=2.0, ymin=-2.0, ymax=2.0, max_iter=256, xres=2048, yr
                 y = 2.0 * x * y + y0
                 x = xt
                 it = it + 1 
-            buffer[px,py] = float(it)/float(max_iter)
+            buffer[px,py] = it
     return(buffer)
 
 
 @numba.jit(nopython=True)
-def genimage(image):
+def genimage(image, rgb):
     img = np.zeros((image.shape[0], image.shape[1], 3))
     for px in range(image.shape[0]):
         for py in range(image.shape[1]):
-            val =  -1 *((image[px,py] * 2.0) - 1.0)
-
-            v = 1.5 - abs(2.0*val - 1.0)
-            t = 0 if (v < 0) else v
-            img[px, py, 0] = int(255*(1.0 if (t > 1.0) else t))
-
-            v = 1.5 - abs(2.0*val + 1.0)
-            t = 0 if (v < 0) else v
-            img[px, py, 2] = int(255*(1.0 if (t > 1.0) else t))
-
-            v = 1.5 - abs(2.0*val)
-            t = 0 if (v < 0) else v
-            img[px, py, 1] = int(255*(1.0 if (t > 1.0) else t))
-
-
+            val = int(image[px,py])-1
+            
+            img[px,py,0] = int(255*rgb[val,0])
+            img[px,py,1] = int(255*rgb[val,1])
+            img[px,py,2] = int(255*rgb[val,2])
+            
     return img 
+
+def gencolmap(m, name=None):
+    cmap = matplotlib.cm.get_cmap(name, m)
+    r = np.zeros([m,3])
+    for a in range(cmap.N):
+      t = cmap(a)
+      r[a,0]=t[0]
+      r[a,1]=t[1]
+      r[a,2]=t[2]
+    return r
 
 def plotimage(image):
     imdat = Image.fromarray(np.transpose(image, axes=[1,0,2]).astype('uint8'), 'RGB')
@@ -69,8 +71,20 @@ def getdefault(text, default, f):
       return float(r)
     else:
       return int(r)
-    
+
+def getdefaultcmapname(text, default):
+    valid_names=matplotlib.cm.cmap_d.keys()
+    challenge = text + "[" + str(default) + "]: "
+    r = input(challenge)
+    if r == '':
+        r = str(default)
+    elif r not in valid_names:
+        print("Valid colour maps: " + str(list(valid_names)))
+        r = getdefaultcmapname(text, default)
+    return r
+
 if __name__ == '__main__':
+    
     print("\nMandelbrot Generator:")
     print("====================\n")
     xmax = getdefault("Xmax", 1, True)
@@ -80,6 +94,8 @@ if __name__ == '__main__':
     w = getdefault("Width", 1500, False)
     h = getdefault("Height", 1000, False)
     mi = getdefault("Iterations", 32, False)
+    cmname = getdefaultcmapname("Colour Map", "jet")
+
     win = Tk()
     win.title("Mandelbrot generator")
 
@@ -87,8 +103,8 @@ if __name__ == '__main__':
     buffer = mandel(xmax=xmax, xmin=xmin, ymax=ymax, ymin=ymin, max_iter=mi, xres=w, yres=h)
     stop = time.time()
     print("Time taken [calculation]: " + str(stop - start) + " seconds")
-    
-    image =  genimage(buffer)   
+    rgb = gencolmap(mi, cmname)
+    image =  genimage(buffer, rgb)   
     stop2 = time.time()
     print("Time taken [render]:      " + str(stop2 - stop) + " seconds")
     plotimage(image)
