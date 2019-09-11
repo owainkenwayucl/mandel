@@ -83,6 +83,11 @@ def getdefaultcmapname(text, default):
         r = getdefaultcmapname(text, default)
     return r
 
+def getdefaultfilename(text):
+    challenge = text + "[empty to not save]: "
+    r = input(challenge)
+    return r
+
 if __name__ == '__main__':
     
     print("\nMandelbrot Generator:")
@@ -111,4 +116,8 @@ if __name__ == '__main__':
     stop3 = time.time()
     print("Time taken [display]:     " + str(stop3 - stop2) + " seconds")
     win.mainloop()
-    
+    outfile = getdefaultfilename("Write out to file")
+    if outfile != "":
+        imdat = Image.fromarray(np.transpose(image, axes=[1,0,2]).astype('uint8'), 'RGB')
+        imdat.save(outfile)
+
