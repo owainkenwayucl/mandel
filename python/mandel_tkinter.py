@@ -121,7 +121,7 @@ if __name__ == '__main__':
         stop4 = time.time()
         print(">>> Writing file: " + outfile)
         imdat = Image.fromarray(np.transpose(image, axes=[1,0,2]).astype('uint8'), 'RGB')
-        imdat.save(outfile)
+        ImageOps.flip(imdat).save(outfile)
         stop5 = time.time()
         print("Time taken [write]:       " + str(stop5 - stop4) + " seconds")
     else:
