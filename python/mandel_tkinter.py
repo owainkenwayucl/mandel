@@ -84,7 +84,7 @@ def getdefaultcmapname(text, default):
     return r
 
 def getdefaultfilename(text):
-    challenge = text + "[empty to not save]: "
+    challenge = text + "[<none>]: "
     r = input(challenge)
     return r
 
@@ -116,8 +116,14 @@ if __name__ == '__main__':
     stop3 = time.time()
     print("Time taken [display]:     " + str(stop3 - stop2) + " seconds")
     win.mainloop()
-    outfile = getdefaultfilename("Write out to file")
+    outfile = getdefaultfilename("Filename")
     if outfile != "":
+        stop4 = time.time()
+        print(">>> Writing file: " + outfile)
         imdat = Image.fromarray(np.transpose(image, axes=[1,0,2]).astype('uint8'), 'RGB')
         imdat.save(outfile)
+        stop5 = time.time()
+        print("Time taken [write]:       " + str(stop5 - stop4) + " seconds")
+    else:
+        print(">>> Not writing file.")
 
