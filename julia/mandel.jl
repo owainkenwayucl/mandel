@@ -31,8 +31,19 @@ function mandel(xmin=-2.0, xmax=2.0, ymin=-2.0, ymax=2.0, max_iter=256, xres=204
 
   end
 
-  imageio.writepgm(pixels, max_iter - 1, "mandel.pgm")
-
+  return pixels
 end
 
-mandel()
+pixels = mandel()
+imageio.writepgm(pixels, 255, "mandel.pgm")
+xstride = floor(Int,size(pixels)[1]/70)
+ystride = floor(Int,size(pixels)[2]/70)
+
+
+corrected = pixels[1:xstride:end, 1:ystride:end]
+#imageio.writepgm(corrected, 255, "mandel2.pgm")
+
+TermShow.hires_render_greyscale_image(corrected/255.0)
+#TermShow.render_greyscale_image(corrected/255.0)
+
+
