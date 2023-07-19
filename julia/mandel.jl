@@ -1,5 +1,5 @@
 include("imageio.jl")
-import imageio
+include("TermShow.jl")
 
 # Split out mandel as a function so we can call it if need be.
 function mandel(xmin=-2.0, xmax=2.0, ymin=-2.0, ymax=2.0, max_iter=256, xres=2048, yres=2048, filename="mandel.pgm")
