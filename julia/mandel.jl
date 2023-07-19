@@ -10,7 +10,7 @@ function mandel(xmin=-2.0, xmax=2.0, ymin=-2.0, ymax=2.0, max_iter=256, xres=204
   for px = 1:xres
     x0 = (Float64(px)/Float64(xres)) * Float64(xmax - xmin) + xmin
 
-    for py = 1:xres
+    for py = 1:yres
       y0 = (Float64(py)/Float64(yres)) * Float64(ymax - ymin) + ymin
 
       iter = 0
