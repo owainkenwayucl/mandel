@@ -1,5 +1,3 @@
-include("imageio.jl")
-include("TermShow.jl")
 include("fractal.jl")
 
 # Split out mandel as a function so we can call it if need be.
